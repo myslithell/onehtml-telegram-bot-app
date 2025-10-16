@@ -1,9 +1,10 @@
 # Viewing Telegram Bot Chats (n8n support)
 DISCLAIMER: This is a version for use on your own PC, as all keys are stored openly in the file. If you deploy it on hosting, anyone who accesses it will be able to read your keys.
 
+**Read this in other languages:** [Русский](README-RU.md) | [简体中文](README-CN.md)
+
 ![image](https://github.com/myslithell/images/blob/main/onehtml-tgbot2.png)
 
-**Read this in other languages:** [Русский](README-RU.md) | [简体中文](README-CN.md)
 
 ## Features
 1) Everything in a single HTML page
