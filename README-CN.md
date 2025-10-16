@@ -47,6 +47,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //同一位置 - API KEYS 部分
 4) 配置消息如何到达此数据库的逻辑
 
 如果您使用 n8n，可以这样做，使用节点保存来自用户的消息和来自机器人的回复：
+(或者可以只用一个节点把用户消息存入数据库)﻿
 
 ![image](https://github.com/myslithell/images/blob/main/one-html-tgbot-n8n.png)
 
