@@ -84,35 +84,35 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
             font-weight: 600;
             display: flex;
             /*justify-content: space-between;*/
-						justify-content: start;
+			justify-content: start;
             align-items: center;
         }
 				
 
         .theme-toggle, .sound-toggle {
-            background: var(--accent-color);
-            border: none;
-            color: white;
-            padding: 8px 12px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: opacity 0.2s;
-						margin-right:10px;
+			background: var(--accent-color);
+			border: none;
+			color: white;
+			padding: 8px 12px;
+			border-radius: 6px;
+			cursor: pointer;
+			font-size: 14px;
+			transition: opacity 0.2s;
+			margin-right:10px;
         }
 
         .theme-toggle:hover, .sound-toggle:hover {
             opacity: 0.8;
         }
 				
-				.sound-toggle.muted {
-						opacity: 0.5;
-				}
+		.sound-toggle.muted {
+			opacity: 0.5;
+		}
 
         .chat-list {
-            flex: 1;
-            overflow-y: auto;
-						background: var(--listchats-color);
+			flex: 1;
+			overflow-y: auto;
+			background: var(--listchats-color);
         }
 
         .chat-item {
@@ -304,7 +304,7 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
             max-height: 120px;
             overflow-y: auto;
             color: var(--text-primary);
-						background: transparent;
+			background: transparent;
         }
 
         .message-input:focus {
@@ -317,7 +317,7 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
             height: 44px;
             border: none;
             /*background: var(--accent-color);*/
-						background: transparent;
+			background: transparent;
             color: white;
             /*border-radius: 50%;*/
             cursor: pointer;
@@ -487,7 +487,6 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
 						['#8e77c5', '#7b63b8'],
 						['#74abd0', '#5c9ac7']
 				];
-        // ===================
 				
 				// Простая хеш-функция для user_id
 				function getUserColorIndex(userId) {
@@ -498,9 +497,8 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
 						}
 						return hash % AVATAR_COLORS.length;
 				}
-
-				/// Функции уведомлений
-				// Создания уведомления
+		
+				// Создание уведомлений
 				function createToastNotification(userName, userId, messageText) {
 						const container = document.getElementById('toastContainer');
 						if (!container) {
@@ -576,8 +574,6 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
 												toast.style.transform = 'translateX(400px)';
 												setTimeout(() => toast.remove(), 300);
 										});
-										
-										// Кнопку тоже плавно убираем
 										this.style.transition = 'opacity 0.3s';
 										this.style.opacity = '0';
 										setTimeout(() => this.remove(), 300);
@@ -621,7 +617,7 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
 						//Notification.requestPermission();
         }
 
-				// Переключение темы
+		// Переключение темы
         function toggleTheme() {
             const body = document.body;
             const button = document.querySelector('.theme-toggle');
@@ -771,7 +767,6 @@ const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
                     .select('*')
                     .eq('user_id', userId)
                     .order('created_at', { ascending: true });
-										//.limit(50); /// лимит 50 сообщений первых - надо сделать 50 последних
 
                 if (error) {
                     throw error;
