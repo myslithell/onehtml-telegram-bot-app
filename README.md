@@ -17,17 +17,6 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 2) Enter your keys
 3) Run in browser
 
-## 📬 Author
-Ex-NASA project contributor | AI enthusiast | Gamedev hobbyist | Engineer Generalist
-
-Follow my Telegram channel for:
-- 🤖 AI news and tools
-- 🧠 Neuroscience insights  
-- 🚀 Space exploration
-- 💭 Thoughts on future tech
-
-[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
-
 ## Before Using:
 1) You need a Supabase table chat_logs (connect the service for free here https://supabase.com/)
 IMPORTANT! The bot that stores messages in the database and the one you connect to HTML must be the same.
@@ -195,3 +184,14 @@ This is at the very end after sending a message to the user from the bot:
   }
 }
 ```
+
+## 📬 Author
+Ex-NASA project contributor | AI enthusiast | Gamedev hobbyist | Engineer Generalist
+
+Follow my Telegram channel for:
+- 🤖 AI news and tools
+- 🧠 Neuroscience insights  
+- 🚀 Space exploration
+- 💭 Thoughts on future tech
+
+[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
