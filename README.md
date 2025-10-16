@@ -3,6 +3,8 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 
 **Read this in other languages:** [Русский](README-RU.md) | [简体中文](README-CN.md)
 
+**Author telegram channel**: [TELEGRAM](https://t.me/+VKz5IExlz08zNTAy)
+
 ## Features
 1) Everything in a single HTML page
 2) Runs locally
