@@ -53,7 +53,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //same place - API KEYS section
 ## JUST FOR N8N WAY
 If you have n8n, you can do it this way, with a node for saving messages from the user and responses from the bot:
 
-![image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+![image](https://github.com/myslithell/images/blob/main/one-html-tgbot-n8n.png)
 
 This is right after the "Telegram Trigger" node (you can copy-paste this into your workflow - it will be inserted as a node):
 ```js
