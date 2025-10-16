@@ -4,9 +4,15 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 
 **Read this in other languages:** [Русский](README-RU.md) | [简体中文](README-CN.md)
 
-**Author telegram channel**: [TELEGRAM](https://t.me/+VKz5IExlz08zNTAy)
+## 📬 Author
+Ex-NASA project contributor | AI enthusiast | Gamedev hobbyist | Engineer Generalist
 
-[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_channel)
+Follow my Telegram channel for:
+- 🤖 AI news and tools
+- 🧠 Neuroscience insights  
+- 🚀 Space exploration
+- 💭 Thoughts on future tech
+[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
 
 ## Features
 1) Everything in a single HTML page
