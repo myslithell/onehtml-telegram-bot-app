@@ -48,7 +48,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //там же - раздел API KEYS
 
 4) Настроить свою логику того как к вам приходят сообщения в эту базу данных
 
-### n8n 
+## n8n 
 Если у вас n8n, то можете сделать так, по узлу для сохранения сообщения от юзера и ответов от бота:
 
 ![image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
@@ -196,5 +196,6 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //там же - раздел API KEYS
 - 💭 Мои шизо-размышления о будущем
 
 [![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
+
 
 
