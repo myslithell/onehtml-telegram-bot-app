@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script>
+// === CONFIGURATION ===
+const BOT_TOKEN = 'ВАШ-ТОКЕН';
+const SUPABASE_URL = 'https://your-database.supabase.co';
+const SUPABASE_ANON_KEY = 'ВАШ-API-KEY';
+</script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Telegram Bot Admin Panel</title>
+		<link rel="icon" type="image/x-icon" href="https://web.telegram.org/favicon.ico">
+		<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #0e1621;
+            --bg-secondary: #0e1621;
+            --bg-tertiary: #2b5278;
+            --text-primary: #ffffff;
+            --text-secondary: #8b949e;
+						--text-active: #ffffff;
+            --accent-color: #5288c1;
+            --border-color: #0e1621;
+            --message-in: #182533;
+            --message-out: #2b5278;
+            --message-out-text: #ffffff;
+            --hover-bg: #17212b;
+						--listchats-color: #17212b;
+        }
+
+        body.light {
+            --bg-primary: #ffffff;
+            --bg-secondary: #6ca587;
+            --bg-tertiary: #419fd9;
+            --text-primary: #222222;
+            --text-secondary: #707579;
+            --accent-color: #0088cc;
+            --border-color: #e5e5e5;
+            --message-in: #ffffff;
+            --message-out: #effdde;
+            --message-out-text: #222222;
+            --hover-bg: #f8f8f8;
+						--listchats-color: #ffffff;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: var(--bg-secondary);
+            height: 100vh;
+            overflow: hidden;
+            color: var(--text-primary);
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            /*max-width: 1400px;*/
+            margin: 0 auto;
+            background: var(--bg-primary);
+        }
+
+        /* Боковая панель со списком чатов */
+        .sidebar {
+            width: 350px;
+            border-right: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-primary);
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            background: var(--hover-bg);
+            color: var(--text-primary);
+            font-size: 18px;
+            font-weight: 600;
+            display: flex;
+            /*justify-content: space-between;*/
+						justify-content: start;
+            align-items: center;
+        }
+				
+
+        .theme-toggle, .sound-toggle {
+            background: var(--accent-color);
+            border: none;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.2s;
+						margin-right:10px;
+        }
+
+        .theme-toggle:hover, .sound-toggle:hover {
+            opacity: 0.8;
+        }
+				
+				.sound-toggle.muted {
+						opacity: 0.5;
+				}
+
+        .chat-list {
+            flex: 1;
+            overflow-y: auto;
+						background: var(--listchats-color);
+        }
+
+        .chat-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-item:hover {
+            background: var(--hover-bg);
+        }
+
+        .chat-item.active {
+            background: var(--bg-tertiary);
+        }
+
+        .chat-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .chat-info {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .chat-name {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .chat-preview {
+            font-size: 14px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat-time {
+            font-size: 12px;
+            color: var(--text-secondary);
+            white-space: nowrap;
+        }
+				
+				.chat-item.active .chat-name {
+            color: var(--text-active);
+        }
+				.chat-item.active .chat-preview {
+            color: var(--text-active);
+        }
+				.chat-item.active .chat-time {
+            color: var(--text-active);
+        }
+
+        /* Область чата */
+        .chat-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-secondary);
+        }
+
+        .chat-header {
+            padding: 15px 20px;
+            background: var(--hover-bg);
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-header-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            /*background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);*/
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+
+        .chat-header-info h2 {
+            font-size: 16px;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .chat-header-info p {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        .messages-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .message {
+            display: flex;
+            margin-bottom: 8px;
+        }
+
+        .message.user {
+            justify-content: flex-start;
+        }
+
+        .message.assistant {
+            justify-content: flex-end;
+        }
+
+        .message-bubble {
+            max-width: 65%;
+            padding: 10px 14px;
+            border-radius: 12px;
+            word-wrap: break-word;
+            position: relative;
+        }
+
+        .message.assistant .message-bubble {
+            background: var(--message-out);
+            color: var(--message-out-text);
+            border-bottom-right-radius: 4px;
+        }
+
+        .message.user .message-bubble {
+            background: var(--message-in);
+            color: var(--text-primary);
+            border-bottom-left-radius: 4px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .message-content {
+            margin-bottom: 4px;
+            line-height: 1.5;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-align: right;
+        }
+
+        .date-separator {
+            text-align: center;
+            margin: 16px 0;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+
+        /* Поле ввода */
+        .input-area {
+            padding: 10px;
+            background: var(--listchats-color);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: none;
+            border-radius: 20px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: none;
+            max-height: 120px;
+            overflow-y: auto;
+            color: var(--text-primary);
+						background: transparent;
+        }
+
+        .message-input:focus {
+            outline: none;
+            border-color: var(--accent-color);
+        }
+
+        .send-button {
+            width: 44px;
+            height: 44px;
+            border: none;
+            /*background: var(--accent-color);*/
+						background: transparent;
+            color: white;
+            /*border-radius: 50%;*/
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+
+        .send-button:hover {
+            opacity: 0.8;
+        }
+
+        .send-button:active {
+            transform: scale(0.95);
+        }
+
+        .send-button:disabled {
+            /*background: #d5d5d5;*/
+            cursor: not-allowed;
+        }
+
+        /* Пустое состояние */
+        .empty-state {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        /* Загрузка */
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+        }
+
+        /* Адаптивный дизайн */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: absolute;
+                z-index: 10;
+                height: 100vh;
+            }
+
+            .sidebar.hidden {
+                display: none;
+            }
+
+            .chat-area.hidden {
+                display: none;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #c4c4c4;
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+				
+				
+				/*  START SCREEN */
+				.start-screen {
+						position: fixed;
+						top: 0;
+						left: 0;
+						width: 100%;
+						height: 100%;
+						background: rgba(14, 22, 33, 0.7);
+						backdrop-filter: blur(5px);
+						z-index: 9999;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						cursor: pointer;
+						transition: opacity 0.4s ease, visibility 0.4s ease;
+				}
+				
+				body.light .start-screen {
+						background: rgba(255, 255, 255, 0.7);
+				}
+
+				.start-screen.hidden {
+						opacity: 0;
+						visibility: hidden;
+						pointer-events: none;
+				}
+
+				.start-content {
+						text-align: center;
+						animation: pulse 2s ease-in-out infinite;
+				}
+
+				.start-content h2 {
+						font-size: 28px;
+						margin-bottom: 10px;
+						color: var(--text-primary);
+				}
+
+				.start-content p {
+						font-size: 16px;
+						color: var(--text-secondary);
+				}
+
+				@keyframes pulse {
+						0%, 100% { transform: scale(1); }
+						50% { transform: scale(1.05); }
+				}
+    </style>
+</head>
+<body>
+<div id="startScreen" class="start-screen">
+    <div class="start-content">
+        <h2>Telegram Bot Admin</h2>
+        <p>Click to enter</p>
+    </div>
+</div>
+    <div class="container">
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <!--<span>Telegram Bot Admin</span>-->
+                <button class="theme-toggle" onclick="toggleTheme()">🌙 Light</button>
+								<button class="sound-toggle" onclick="toggleSound()">🔔 Sound</button>
+            </div>
+            <div class="chat-list" id="chatList">
+                <div class="loading">Loading chats...</div>
+            </div>
+        </div>
+
+        <div class="chat-area" id="chatArea">
+            <div class="empty-state">
+                Select a chat to start
+            </div>
+        </div>
+    </div>
+
+    <!-- Supabase CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <script>
+				// Палитра цветов для аватаров (Telegram-style пастельные градиенты)
+				const AVATAR_COLORS = [
+						['#e17076', '#d95c5c'],
+						['#faa774', '#f48847'],
+						['#a695e7', '#7f6fc8'],
+						['#6ec9cb', '#54b9bc'],
+						['#65aadd', '#4c8ed9'],
+						['#76c84d', '#5fb73e'],
+						['#f5bd5d', '#f3a543'],
+						['#ee7aae', '#e8669a'],
+						['#8e77c5', '#7b63b8'],
+						['#74abd0', '#5c9ac7']
+				];
+        // ===================
+				
+				// Простая хеш-функция для user_id
+				function getUserColorIndex(userId) {
+						let hash = 0;
+						const str = String(userId);
+						for (let i = 0; i < str.length; i++) {
+								hash = str.charCodeAt(i) + hash;
+						}
+						return hash % AVATAR_COLORS.length;
+				}
+
+				/// Функции уведомлений
+				// Создания уведомления
+				function createToastNotification(userName, userId, messageText) {
+						const container = document.getElementById('toastContainer');
+						if (!container) {
+								const newContainer = document.createElement('div');
+								newContainer.id = 'toastContainer';
+								newContainer.style.cssText = 'position: fixed; bottom: 20px; right: 20px; z-index: 10000; display: flex; flex-direction: column; gap: 10px; max-width: 350px;';
+								document.body.appendChild(newContainer);
+						}
+						
+						const toast = document.createElement('div');
+						toast.className = 'toast-notification';
+						toast.style.cssText = 'opacity: 0.9; background: var(--message-in); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); border: 1px solid var(--border-color); padding: 15px; cursor: pointer; transition: transform 0.2s; display: flex; gap: 12px; align-items: flex-start;';
+						
+						const initial = userName.charAt(0).toUpperCase();
+						
+						toast.innerHTML = `
+								<div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; flex-shrink: 0;">${initial}</div>
+								<div style="flex: 1; min-width: 0;">
+										<div style="font-weight: 600; color: var(--text-primary); margin-bottom: 4px;">${userName}</div>
+										<div style="font-size: 14px; color: var(--text-secondary); overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.4;">${messageText}</div>
+								</div>
+								<div onclick="event.stopPropagation(); this.parentElement.remove(); checkAndRemoveClearButton();" style="color: var(--text-secondary); cursor: pointer; font-size: 18px; line-height: 1; padding: 0 5px;">&times;</div>
+						`;
+						
+						toast.onclick = function() {
+								if (typeof openChat === 'function') {
+										openChat(userId);
+								}
+								toast.remove();
+								checkAndRemoveClearButton();
+						};
+						
+						toast.onmouseenter = function() {
+								this.style.transform = 'scale(1.02)';
+						};
+						
+						toast.onmouseleave = function() {
+								this.style.transform = 'scale(1)';
+						};
+						
+						document.getElementById('toastContainer').appendChild(toast);
+						
+						// Автоскрытие через 5 секунд
+						setTimeout(() => {
+								if (toast.parentElement) {
+										toast.style.transition = 'opacity 0.3s, transform 0.3s';
+										toast.style.opacity = '0';
+										toast.style.transform = 'translateX(400px)';
+										setTimeout(() => {
+												toast.remove();
+												checkAndRemoveClearButton();
+										}, 300);
+								}
+						}, 10000);
+				}
+
+				// Функция создания кнопки "Скрыть все"
+				function createClearAllButton() {
+						const container = document.getElementById('toastContainer');
+						if (!container) return;
+						
+						let clearBtn = document.getElementById('clearAllToasts');
+						if (!clearBtn) {
+								clearBtn = document.createElement('button');
+								clearBtn.id = 'clearAllToasts';
+								clearBtn.textContent = 'Hide all';
+								clearBtn.style.cssText = 'background: #0088cc; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; align-self: flex-end; width: 100%;';
+								clearBtn.onclick = function() {
+										const toasts = container.querySelectorAll('.toast-notification');
+										toasts.forEach(toast => {
+												toast.style.transition = 'opacity 0.3s, transform 0.3s';
+												toast.style.opacity = '0';
+												toast.style.transform = 'translateX(400px)';
+												setTimeout(() => toast.remove(), 300);
+										});
+										
+										// Кнопку тоже плавно убираем
+										this.style.transition = 'opacity 0.3s';
+										this.style.opacity = '0';
+										setTimeout(() => this.remove(), 300);
+								};
+								container.insertBefore(clearBtn, container.firstChild);
+						}
+				}
+				// Проверка и удаление кнопки если нет уведомлений
+				function checkAndRemoveClearButton() {
+						const container = document.getElementById('toastContainer');
+						if (!container) return;
+						
+						const toasts = container.querySelectorAll('.toast-notification');
+						const clearBtn = document.getElementById('clearAllToasts');
+						
+						if (toasts.length === 0 && clearBtn) {
+								clearBtn.style.transition = 'opacity 0.3s, transform 0.3s';
+								clearBtn.style.opacity = '0';
+								clearBtn.style.transform = 'translateY(20px)';
+								setTimeout(() => clearBtn.remove(), 300);
+						}
+				}
+
+				// Обновленная функция показа уведомления с кнопкой
+				function showToast(userName, userId, messageText) {
+						createToastNotification(userName, userId, messageText);
+						createClearAllButton();
+				}
+
+        // Инициализация Supabase клиента
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Глобальные переменные
+        let chats = [];
+        let currentUserId = null;
+        let realtimeChannel = null;
+				let soundEnabled = true;
+
+        // Запрос разрешения на уведомления - БЕССМЫСЛЕННО ПРИ ИСПОЛЬЗОВАНИИ ЛОКАЛЬНО НА WINDOWS
+        if ('Notification' in window && Notification.permission === 'default') {
+						//Notification.requestPermission();
+        }
+
+				// Переключение темы
+        function toggleTheme() {
+            const body = document.body;
+            const button = document.querySelector('.theme-toggle');
+            
+            body.classList.toggle('light');
+            
+            if (body.classList.contains('light')) {
+                button.textContent = '🌙 Dark';
+                localStorage.setItem('theme', 'light');
+            } else {
+                button.textContent = '☀️ Light';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+				
+				// Переключатель звука
+				function toggleSound() {
+						soundEnabled = !soundEnabled;
+						const button = document.querySelector('.sound-toggle');
+						
+						if (soundEnabled) {
+								button.textContent = '🔔 Sound';
+								button.classList.remove('muted');
+								localStorage.setItem('sound', 'enabled');
+						} else {
+								button.textContent = '🔕 Muted';
+								button.classList.add('muted');
+								localStorage.setItem('sound', 'disabled');
+						}
+				}
+
+        // Загрузка сохраненной темы
+        function loadTheme() {
+						const savedSound = localStorage.getItem('sound');
+						const soundButton = document.querySelector('.sound-toggle');
+
+						if (savedSound === 'disabled') {
+								soundEnabled = false;
+								soundButton.textContent = '🔕 Muted';
+								soundButton.classList.add('muted');
+						} else {
+								soundEnabled = true;
+								soundButton.textContent = '🔔 Sound';
+						}
+            const savedTheme = localStorage.getItem('theme');
+            const button = document.querySelector('.theme-toggle');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light');
+                button.textContent = '🌙 Dark';
+            } else {
+                button.textContent = '☀️ Light';
+            }
+        }
+
+
+        // Инициализация приложения
+        async function init() {
+						loadTheme();
+            await loadChats();
+            subscribeToRealtime();
+        }
+
+        // Загрузка списка чатов
+        async function loadChats() {
+            try {
+                const { data, error } = await supabase
+                    .from('chat_logs')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+
+                if (error) {
+                    throw error;
+                }
+
+                // Группировка сообщений по user_id
+                const chatMap = new Map();
+                data.forEach(msg => {
+                    const existing = chatMap.get(msg.user_id);
+										if (!existing || new Date(msg.created_at) > new Date(existing.last_time)) {
+                        chatMap.set(msg.user_id, {
+                            user_id: msg.user_id,
+                            first_name: msg.first_name,
+                            username: msg.username,
+                            last_message: msg.content,
+                            last_time: msg.created_at
+                        });
+                    }
+                });
+
+                chats = Array.from(chatMap.values());
+                chats.sort((a, b) => new Date(b.last_time) - new Date(a.last_time));
+                
+                renderChatList();
+            } catch (error) {
+                console.error('Ошибка загрузки чатов:', error);
+                document.getElementById('chatList').innerHTML = '<div class="loading">Error loading chats</div>';
+            }
+        }
+
+        // Отображение списка чатов
+        function renderChatList() {
+            const chatListEl = document.getElementById('chatList');
+            
+            if (chats.length === 0) {
+                chatListEl.innerHTML = '<div class="loading">The chat list is empty</div>';
+                return;
+            }
+
+            chatListEl.innerHTML = chats.map(chat => {
+                const displayName = chat.first_name || chat.username || 'User';
+                const initial = displayName.charAt(0).toUpperCase();
+                const preview = chat.last_message ? chat.last_message.substring(0, 50) : 'No messages';
+                const time = formatTime(chat.last_time);
+                const isActive = chat.user_id === currentUserId ? 'active' : '';
+								
+								const colorIndex = getUserColorIndex(chat.user_id);
+								const colors = AVATAR_COLORS[colorIndex];
+								const gradient = `linear-gradient(135deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
+
+                return `
+                    <div class="chat-item ${isActive}" onclick="openChat('${chat.user_id}')">
+                        <div class="chat-avatar" style="background: ${gradient}">${initial}</div>
+                        <div class="chat-info">
+                            <div class="chat-name">${displayName}</div>
+                            <div class="chat-preview">${preview}</div>
+                        </div>
+                        <div class="chat-time">${time}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Открытие чата
+        async function openChat(userId) {
+            currentUserId = userId;
+            renderChatList();
+
+            const chat = chats.find(c => c.user_id === userId);
+            const displayName = chat.first_name || chat.username || 'User';
+            const initial = displayName.charAt(0).toUpperCase();
+
+            // Загрузка сообщений
+            try {
+                const { data, error } = await supabase
+                    .from('chat_logs')
+                    .select('*')
+                    .eq('user_id', userId)
+                    .order('created_at', { ascending: true });
+										//.limit(50); /// лимит 50 сообщений первых - надо сделать 50 последних
+
+                if (error) {
+                    throw error;
+                }
+
+                renderChatArea(displayName, initial, data);
+
+                // Скрытие sidebar на мобильных
+                if (window.innerWidth <= 768) {
+                    document.getElementById('sidebar').classList.add('hidden');
+                }
+            } catch (error) {
+                console.error('Ошибка загрузки сообщений:', error);
+            }
+        }
+
+        // Отображение области чата
+        function renderChatArea(displayName, initial, messages) {
+            const chatAreaEl = document.getElementById('chatArea');
+            
+            let messagesHtml = '';
+            let lastDate = null;
+
+            messages.forEach(msg => {
+                const msgDate = new Date(msg.created_at).toLocaleDateString('ru-RU');
+                
+                if (msgDate !== lastDate) {
+                    messagesHtml += `<div class="date-separator">${msgDate}</div>`;
+                    lastDate = msgDate;
+                }
+
+                const time = new Date(msg.created_at).toLocaleTimeString('ru-RU', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+
+                const role = msg.role || 'user';
+                messagesHtml += `
+                    <div class="message ${role}">
+                        <div class="message-bubble">
+                            <div class="message-content">${escapeHtml(msg.content)}</div>
+                            <div class="message-time">${time}</div>
+                        </div>
+                    </div>
+                `;
+            });
+						
+						const colorIndex = getUserColorIndex(currentUserId);
+						const colors = AVATAR_COLORS[colorIndex];
+						const gradient = `linear-gradient(135deg, ${colors[0]} 0%, ${colors[1]} 100%)`;
+
+            chatAreaEl.innerHTML = `
+                <div class="chat-header">
+                    <div class="chat-header-avatar" style="background: ${gradient}">${initial}</div>
+                    <div class="chat-header-info">
+                        <h2>${displayName}</h2>
+                        <p>ID: ${currentUserId}</p>
+                    </div>
+                </div>
+                <div class="messages-container" id="messagesContainer">
+                    ${messagesHtml}
+                </div>
+                <div class="input-area">
+                    <textarea 
+                        class="message-input" 
+                        id="messageInput" 
+                        placeholder="Write a message..."
+                        rows="1"
+                        onkeydown="handleInputKeydown(event)"
+                    ></textarea>
+                    <button class="send-button" onclick="sendMessage()" id="sendButton">
+                        <svg width="34" height="34" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+													<path d="M122.5 84.5C133.563 83.4735 144.23 84.9735 154.5 89C408.469 216.651 662.469 344.318 916.5 472C941.146 489.082 945.979 510.582 931 536.5C928.78 539.021 926.28 541.188 923.5 543C664.833 673 406.167 803 147.5 933C127.128 940.528 109.628 936.362 95 920.5C86.0882 906.847 84.0882 892.181 89 876.5C124.227 781.715 159.727 687.049 195.5 592.5C355.8 565.45 516.134 538.617 676.5 512C516.332 484.416 355.998 457.249 195.5 430.5C158.708 332.959 122.208 235.292 86 137.5C82.7755 109.294 94.9421 91.6268 122.5 84.5Z" fill="#40a7e3"/>
+											</svg>
+                    </button>
+                </div>
+            `;
+
+            // Прокрутка к последнему сообщению
+            const container = document.getElementById('messagesContainer');
+            container.scrollTop = container.scrollHeight;
+
+            // Автоматическое изменение высоты textarea
+            const input = document.getElementById('messageInput');
+            input.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+        }
+
+        // Обработка нажатия клавиш в поле ввода
+        function handleInputKeydown(event) {
+            if (event.key === 'Enter' && !event.shiftKey) {
+                event.preventDefault();
+                sendMessage();
+            }
+        }
+
+        // Отправка сообщения
+        async function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const sendButton = document.getElementById('sendButton');
+            const content = input.value.trim();
+
+            if (!content || !currentUserId) {
+                return;
+            }
+
+            sendButton.disabled = true;
+            input.disabled = true;
+
+            try {
+                // Отправка через Telegram Bot API
+                const telegramResponse = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: currentUserId,
+                        text: content
+                    })
+                });
+
+                if (!telegramResponse.ok) {
+                    throw new Error('Telegram API ERROR');
+                }
+
+                // Сохранение в базу данных
+                const chat = chats.find(c => c.user_id === currentUserId);
+								const { error } = await supabase
+										.from('chat_logs')
+										.insert([{
+												user_id: currentUserId,
+												username: chat.username,
+												first_name: chat.first_name,
+												session_id: 'user_'+currentUserId, // или генерировать ID
+												role: 'assistant',
+												content: content,
+												created_at: new Date().toISOString()
+										}]);
+
+                if (error) {
+                    throw error;
+                }
+
+                // Очистка поля ввода
+                input.value = '';
+                input.style.height = 'auto';
+
+            } catch (error) {
+                console.error('Ошибка отправки сообщения:', error);
+                alert('Failed to send message. Check your bot token.');
+            } finally {
+                sendButton.disabled = false;
+                input.disabled = false;
+                input.focus();
+            }
+        }
+
+        // Подписка на real-time обновления
+        function subscribeToRealtime() {
+            realtimeChannel = supabase
+                .channel('chat_logs_changes')
+								.on('system', {}, (payload) => {
+										console.log('Realtime system event:', payload);
+								})
+                .on(
+                    'postgres_changes',
+                    {
+                        event: 'INSERT',
+                        schema: 'public',
+                        table: 'chat_logs'
+                    },
+                    handleNewMessage
+                )
+                .subscribe();
+        }
+
+        // Обработка нового сообщения из real-time
+        function handleNewMessage(payload) {				
+						/// Уведомление от сообщений человека
+						if(payload.new.role=='user') {
+							/// Звуковое 
+							if(soundEnabled) {
+									notify.play().catch(e => console.log('Звук заблокирован:', e));
+							}
+							/// Всплывающее
+							showToast(payload.new.first_name, payload.new.user_id, payload.new.content);
+							}
+
+            const newMsg = payload.new;
+
+            // Обновление списка чатов
+            const chatIndex = chats.findIndex(c => c.user_id === newMsg.user_id);
+            if (chatIndex >= 0) {
+                chats[chatIndex].last_message = newMsg.content;
+                chats[chatIndex].last_time = newMsg.created_at;
+                chats.sort((a, b) => new Date(b.last_time) - new Date(a.last_time));
+            } else {
+                chats.unshift({
+                    user_id: newMsg.user_id,
+                    first_name: newMsg.first_name,
+                    username: newMsg.username,
+                    last_message: newMsg.content,
+                    last_time: newMsg.created_at
+                });
+            }
+            renderChatList();
+
+            // Обновление активного чата
+            if (newMsg.user_id === currentUserId) {
+                const container = document.getElementById('messagesContainer');
+                const time = new Date(newMsg.created_at).toLocaleTimeString('ru-RU', { 
+                    hour: '2-digit', 
+                    minute: '2-digit' 
+                });
+
+                const role = newMsg.role || 'user';
+                const messageEl = document.createElement('div');
+                messageEl.className = `message ${role}`;
+                messageEl.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="message-content">${escapeHtml(newMsg.content)}</div>
+                        <div class="message-time">${time}</div>
+                    </div>
+                `;
+                container.appendChild(messageEl);
+                container.scrollTop = container.scrollHeight;
+            }
+
+            // Уведомление для входящих сообщений
+            if (newMsg.role === 'user' && newMsg.user_id !== currentUserId && document.hidden) {
+								showNotification(newMsg);
+						}
+        }
+
+        // Показ браузерного уведомления
+        function showNotification(msg) {
+            if ('Notification' in window && Notification.permission === 'granted') {
+                const displayName = msg.first_name || msg.username || 'User';
+                const notification = new Notification(displayName, {
+                    body: msg.content.substring(0, 100),
+                    icon: 'https://telegram.org/img/t_logo.png',
+                    tag: msg.user_id
+                });
+
+                notification.onclick = function() {
+                    window.focus();
+                    openChat(msg.user_id);
+                    notification.close();
+                };
+            }
+        }
+
+        // Форматирование времени
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+
+            if (diffDays === 0) {
+                return date.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            } else if (diffDays === 1) {
+                return 'вчера';
+            } else if (diffDays < 7) {
+                return date.toLocaleDateString('ru-RU', { weekday: 'short' });
+            } else {
+                return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+            }
+        }
+
+        // Экранирование HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+
+
+				/// ЗВУК УВЕДОМЛЕНИЯ
+				const notify = new Audio('data:audio/wav;base64,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');
+				
+				// Разблокировка звука при первом клике
+				let audioUnlocked = false;
+				const startScreen = document.getElementById('startScreen');
+				startScreen.addEventListener('click', function() {
+						// Разблокировка звука
+						notify.play().then(() => {
+								notify.pause();
+								notify.currentTime = 0;
+								audioUnlocked = true;
+								// Скрытие стартового экрана
+								startScreen.classList.add('hidden');
+						}).catch(() => {
+								audioUnlocked = true;
+								startScreen.classList.add('hidden');
+						});
+				}, { once: true });
+
+
+        // Запуск приложения
+        init();
+    </script>
+</body>
+</html>
