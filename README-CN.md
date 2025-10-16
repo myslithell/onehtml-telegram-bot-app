@@ -179,3 +179,14 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //同一位置 - API KEYS 部分
   }
 }
 ```
+
+## 📬 作者
+前NASA项目贡献者 | AI爱好者 | 游戏开发爱好者 | 通才工程师
+
+关注我的Telegram频道了解：
+- 🤖 AI新闻和工具
+- 🧠 神经科学见解
+- 🚀 太空探索
+- 💭 未来科技思考
+
+[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
