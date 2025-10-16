@@ -49,7 +49,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //same place - API KEYS section
 4) Configure your own logic for how messages arrive in this database
 
 
-### JUST FOR n8n
+## JUST FOR n8n
 If you have n8n, you can do it this way, with a node for saving messages from the user and responses from the bot:
 
 This is right after the "Telegram Trigger" node (you can copy-paste this into your workflow - it will be inserted as a node):
