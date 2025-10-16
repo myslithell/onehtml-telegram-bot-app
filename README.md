@@ -4,17 +4,6 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 
 **Read this in other languages:** [Русский](README-RU.md) | [简体中文](README-CN.md)
 
-## 📬 Author
-Ex-NASA project contributor | AI enthusiast | Gamedev hobbyist | Engineer Generalist
-
-Follow my Telegram channel for:
-- 🤖 AI news and tools
-- 🧠 Neuroscience insights  
-- 🚀 Space exploration
-- 💭 Thoughts on future tech
-
-[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
-
 ## Features
 1) Everything in a single HTML page
 2) Runs locally
@@ -27,6 +16,17 @@ Follow my Telegram channel for:
 1) Download [admin.html](admin.html)
 2) Enter your keys
 3) Run in browser
+
+## 📬 Author
+Ex-NASA project contributor | AI enthusiast | Gamedev hobbyist | Engineer Generalist
+
+Follow my Telegram channel for:
+- 🤖 AI news and tools
+- 🧠 Neuroscience insights  
+- 🚀 Space exploration
+- 💭 Thoughts on future tech
+
+[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
 
 ## Before Using:
 1) You need a Supabase table chat_logs (connect the service for free here https://supabase.com/)
