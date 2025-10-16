@@ -6,6 +6,8 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 
 **Author telegram channel**: [TELEGRAM](https://t.me/+VKz5IExlz08zNTAy)
 
+[![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/your_channel)
+
 ## Features
 1) Everything in a single HTML page
 2) Runs locally
