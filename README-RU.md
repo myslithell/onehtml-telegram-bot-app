@@ -1,7 +1,7 @@
 # Просмотр чатов тг-бота
 ДИСКЛЕЙМЕР: это версия для использования на своем ПК, т.к. все ключи хранятся открыто в файле. Если вы разместите его на хостинг, то кто откроет его сможет прочитать ваши ключи.
 
-![image](https://github.com/myslithell/images/blob/main/onehtml-tgbot.png)
+![image](https://github.com/myslithell/images/blob/main/onehtml-tgbot2.png)
 
 ## Особенности
 1) все в одной html странице
@@ -197,6 +197,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //там же - раздел API KEYS
 - 💭 Мои шизо-размышления о будущем
 
 [![Author telegram](https://img.shields.io/badge/Telegram-2CA5E0?style=for-the-badge&logo=telegram&logoColor=white)](https://t.me/+VKz5IExlz08zNTAy)
+
 
 
 
