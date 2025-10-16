@@ -1,6 +1,8 @@
 # 查看 Telegram 机器人聊天记录
 免责声明：这是用于您自己电脑的版本，因为所有密钥都公开存储在文件中。如果您将其部署到托管服务上，任何访问它的人都可以读取您的密钥。
 
+![image](https://github.com/myslithell/images/blob/main/onehtml-tgbot2.png)
+
 ## 特点
 1) 所有内容都在一个 HTML 页面中
 2) 本地运行
