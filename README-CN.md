@@ -48,6 +48,8 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //同一位置 - API KEYS 部分
 
 如果您使用 n8n，可以这样做，使用节点保存来自用户的消息和来自机器人的回复：
 
+![image](https://github.com/myslithell/images/blob/main/one-html-tgbot-n8n.png)
+
 这是在"Telegram Trigger"节点之后（您可以将其复制粘贴到工作流中 - 它将作为节点插入）：
 ```js
 {
