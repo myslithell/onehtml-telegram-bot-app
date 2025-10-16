@@ -51,7 +51,7 @@ const SUPABASE_ANON_KEY = 'XXXXXXXXXXX'; //same place - API KEYS section
 
 4) Configure your own logic for how messages arrive in this database
 
-## JUST FOR N8N WAY
+## N8N EXAMPLE
 If you have n8n, you can do it this way, with a node for saving messages from the user and responses from the bot:
 (or you can make just 1 node to save user messages to the database)﻿
 
