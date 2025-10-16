@@ -12,7 +12,7 @@ DISCLAIMER: This is a version for use on your own PC, as all keys are stored ope
 6) Colorful "avatars" via hash function
 
 ## Usage:
-1) Download
+1) Download admin.html
 2) Enter your keys
 3) Run in browser
 
